@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 20, 2021 at 07:54 PM
+-- Generation Time: Jan 27, 2021 at 11:54 PM
 -- Server version: 10.4.13-MariaDB
 -- PHP Version: 7.4.8
 
@@ -80,23 +80,12 @@ INSERT INTO `tb_berita` (`id_berita`, `judul_berita`, `gambar_berita`, `id_admin
 
 CREATE TABLE `tb_pengaduan` (
   `id_pengaduan` int(11) NOT NULL,
-  `nama_pengadu` varchar(50) NOT NULL,
-  `nik_pengadu` varchar(16) NOT NULL,
+  `id_warga` int(11) NOT NULL,
   `jenis_pengaduan` varchar(50) NOT NULL,
   `isi_pengaduan` text NOT NULL,
-  `email_pengadu` varchar(50) NOT NULL,
-  `rt_pengadu` varchar(3) NOT NULL,
   `status` int(11) NOT NULL,
   `waktu_pengaduan` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dumping data for table `tb_pengaduan`
---
-
-INSERT INTO `tb_pengaduan` (`id_pengaduan`, `nama_pengadu`, `nik_pengadu`, `jenis_pengaduan`, `isi_pengaduan`, `email_pengadu`, `rt_pengadu`, `status`, `waktu_pengaduan`) VALUES
-(8, 'Muhammad Ilham Fhadilah', '3674010801980003', 'Ingin Mengajukan Surat Keterangan Belum Menikah', 'Saya ingin mengajukan surat keterangan belum menikah. Bagaimana caranya? Mohon penjelasannya. Terima kasih', 'ilhammahier@gmail.com', '02', 0, '2021-01-20 22:51:02'),
-(9, 'Bagas Kurniawan', '3674010801980002', 'Pengajuan Surat Keterangan Jomblo', 'Saya ingin mengajukan surat keterangan jomblo, apakah bisa? Terima kasih', 'bagasaci@gmail.com', '01', 0, '2021-01-20 22:59:37');
 
 -- --------------------------------------------------------
 
@@ -147,6 +136,31 @@ INSERT INTO `tb_surat` (`id_surat`, `nama_surat`, `file_surat`, `id_admin`, `upl
 (18, 'surat-keterangan-warisan', 'surat-keterangan-warisan.docx', 1, '2021-01-20 22:03:34'),
 (19, 'surat-keterangan-yatim-piatu', 'surat-keterangan-yatim-piatu.docx', 1, '2021-01-20 22:04:03');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_warga`
+--
+
+CREATE TABLE `tb_warga` (
+  `id_warga` int(11) NOT NULL,
+  `nama_warga` varchar(50) NOT NULL,
+  `nik` varchar(16) NOT NULL,
+  `email_warga` varchar(50) NOT NULL,
+  `password` text NOT NULL,
+  `alamat` text NOT NULL,
+  `rt` varchar(3) NOT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tb_warga`
+--
+
+INSERT INTO `tb_warga` (`id_warga`, `nama_warga`, `nik`, `email_warga`, `password`, `alamat`, `rt`, `status`) VALUES
+(1, 'Muhammad Ilham Fhadilah', '3674010801990005', 'mahier.fh@gmail.com', '$2y$10$7qmjWmGkwYiNBWDImqDQ0OGCQ4G7NIiVaFQvkmV0cuUJYKHDfXzOe', 'Kp. Cikande', '02', 1),
+(2, 'Fhadilah Ilham', '3674010801990006', 'ilhamelmahier21@gmail.com', '$2y$10$72MVUlljG3uI2FKzrSmhi.wxIyiFPk6mtccmkW2a3AXOVdwmu75MK', 'Kp. Jayanti', '01', 0);
+
 --
 -- Indexes for dumped tables
 --
@@ -168,7 +182,8 @@ ALTER TABLE `tb_berita`
 -- Indexes for table `tb_pengaduan`
 --
 ALTER TABLE `tb_pengaduan`
-  ADD PRIMARY KEY (`id_pengaduan`);
+  ADD PRIMARY KEY (`id_pengaduan`),
+  ADD KEY `id_warga` (`id_warga`);
 
 --
 -- Indexes for table `tb_reply_pengaduan`
@@ -184,6 +199,12 @@ ALTER TABLE `tb_reply_pengaduan`
 ALTER TABLE `tb_surat`
   ADD PRIMARY KEY (`id_surat`),
   ADD KEY `id_admin` (`id_admin`);
+
+--
+-- Indexes for table `tb_warga`
+--
+ALTER TABLE `tb_warga`
+  ADD PRIMARY KEY (`id_warga`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -205,19 +226,25 @@ ALTER TABLE `tb_berita`
 -- AUTO_INCREMENT for table `tb_pengaduan`
 --
 ALTER TABLE `tb_pengaduan`
-  MODIFY `id_pengaduan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id_pengaduan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tb_reply_pengaduan`
 --
 ALTER TABLE `tb_reply_pengaduan`
-  MODIFY `id_reply_pengaduan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id_reply_pengaduan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `tb_surat`
 --
 ALTER TABLE `tb_surat`
   MODIFY `id_surat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT for table `tb_warga`
+--
+ALTER TABLE `tb_warga`
+  MODIFY `id_warga` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
@@ -228,6 +255,12 @@ ALTER TABLE `tb_surat`
 --
 ALTER TABLE `tb_berita`
   ADD CONSTRAINT `tb_berita_ibfk_1` FOREIGN KEY (`id_admin`) REFERENCES `tb_admin` (`id_admin`) ON DELETE NO ACTION ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tb_pengaduan`
+--
+ALTER TABLE `tb_pengaduan`
+  ADD CONSTRAINT `tb_pengaduan_ibfk_1` FOREIGN KEY (`id_warga`) REFERENCES `tb_warga` (`id_warga`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tb_reply_pengaduan`

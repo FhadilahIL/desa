@@ -72,6 +72,7 @@ class Admin extends CI_Controller
 		$data['profile'] = $this->M_admin->detail_admin(md5($this->session->userdata('id')))->row();
 		$data['active'] = ['', '', '', 'active', '', ''];
 		$data['tampil_pengaduan'] = $this->M_pengaduan->tampil_pengaduan()->result();
+		$data['warga'] = $this->M_warga->tampil_warga_aktif()->result();
 		$this->load->view('templates/header', $data);
 		$this->load->view('templates/sidebar');
 		$this->load->view('templates/topbar');
@@ -152,7 +153,7 @@ class Admin extends CI_Controller
 
 	function detail_aduan($id)
 	{
-		$data['active'] = ['', '', 'active', '', '', ''];
+		$data['active'] = ['', '', '', 'active', '', ''];
 		$data['profile'] = $this->M_admin->detail_admin(md5($this->session->id))->row();
 		$data['data_pengaduan'] = $this->M_pengaduan->detail_pengaduan($id)->row();
 		$data['title'] = 'Detail Pengaduan';

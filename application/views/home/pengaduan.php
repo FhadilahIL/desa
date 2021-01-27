@@ -24,7 +24,7 @@
         <?= $this->session->flashdata('info'); ?> <a href="<?= base_url('profile') ?>">Klik Disini</a>
     </div>
 <?php } ?>
-<form action="<?= base_url('pengaduan/tambah_pengaduan') ?>" method="post">
+<form action="<?= base_url('pengaduan/ajukan_pengaduan') ?>" method="post">
     <div class="form-group">
         <label>Nama Pengadu</label>
         <input type="text" readonly name="nama_pengadu" class="form-control" value="<?= $warga->nama_warga ?>" required>
@@ -32,6 +32,7 @@
     <div class="form-group">
         <label>NIK Pengadu</label>
         <input type="text" readonly value="<?= $warga->nik ?>" oninput="this.value = this.value.replace(/[^0-9]/g,'').replace(/(\..*)\./g, '$1')" name="nik_pengadu" class="form-control" required>
+        <input type="hidden" readonly value="<?= $warga->id_warga ?>" oninput="this.value = this.value.replace(/[^0-9]/g,'').replace(/(\..*)\./g, '$1')" name="id_warga" class="form-control" required>
     </div>
     <div class="form-group">
         <label>RT Pengadu</label>
@@ -43,7 +44,7 @@
     </div>
     <div class="form-group">
         <label>Jenis Pengaduan</label>
-        <select name="jenis_pengaduan" id="jenis_pengaduan" onchange="jenisPengaduan()" class="form-control">
+        <select name="jenis_pengaduan" id="jenis_pengaduan" class="form-control">
             <option value="">-- Pilih Jenis Pengaduan --</option>
             <option value="Jalan Desa">Jalan Desa</option>
             <option value="Irigasi">Irigasi</option>

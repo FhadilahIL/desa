@@ -19,19 +19,19 @@
                         <div class="col-lg col-sm">
                             <div class="row mt-3">
                                 <div class="col-lg-4 col-sm-4">Nama Pengadu</div>
-                                <div class="col-lg-8 col-sm-8"><b><?= $data_pengaduan->nama_pengadu ?></b></div>
+                                <div class="col-lg-8 col-sm-8"><b><?= $data_pengaduan->nama_warga ?></b></div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-lg-4 col-sm-4">NIK Pengadu</div>
-                                <div class="col-lg-8 col-sm-8"><?= $data_pengaduan->nik_pengadu ?></div>
+                                <div class="col-lg-8 col-sm-8"><?= $data_pengaduan->nik ?></div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-lg-4 col-sm-4">Email Pengadu</div>
-                                <div class="col-lg-8 col-sm-8"><?= $data_pengaduan->email_pengadu ?></div>
+                                <div class="col-lg-8 col-sm-8"><?= $data_pengaduan->email_warga ?></div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-lg-4 col-sm-4">RT Pengadu</div>
-                                <div class="col-lg-8 col-sm-8"><?= $data_pengaduan->rt_pengadu ?></div>
+                                <div class="col-lg-8 col-sm-8"><?= $data_pengaduan->rt ?></div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-lg-4 col-sm-4">Waktu Pengaduan</div>

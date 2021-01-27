@@ -13,31 +13,47 @@ class Pengaduan extends CI_Controller
     {
         $data = [
             'jenis_pengaduan'   => $this->input->post('jenis_pengaduan', TRUE),
-            'nama_pengadu'      => $this->input->post('nama_pengadu', TRUE),
-            'email_pengadu'     => $this->input->post('email_pengadu', TRUE),
-            'nik_pengadu'       => $this->input->post('nik_pengadu', TRUE),
-            'rt_pengadu'        => $this->input->post('rt_pengadu', TRUE),
+            'id_warga'          => $this->input->post('id_warga', TRUE),
             'isi_pengaduan'     => $this->input->post('isi_pengaduan', TRUE),
             'status'            => 0,
             'waktu_pengaduan'   => date('Y-m-d H:i:s')
         ];
 
         if ($this->M_pengaduan->tambah_pengaduan($data)) {
-            if ($this->session->id) {
-                $this->session->set_flashdata('berhasil', 'Berhasil Menambahkan Data Pengaduan');
-                redirect('admin/data_pengaduan');
-            } else {
-                $this->session->set_flashdata('berhasil', 'Data Pengaduan Berhasil Diajukan. Silahkan Menunggu Email Balasan Dari Admin.');
-                redirect('home/form_pengaduan');
-            }
+            $this->session->set_flashdata('berhasil', 'Berhasil Menambahkan Data Pengaduan');
+            redirect('admin/data_pengaduan');
+            // if ($this->session->id) {
+            // } else {
+            //     $this->session->set_flashdata('berhasil', 'Data Pengaduan Berhasil Diajukan. Silahkan Menunggu Email Balasan Dari Admin.');
+            //     redirect('form_pengaduan');
+            // }
         } else {
-            if ($this->session->id) {
-                $this->session->set_flashdata('gagal', 'Gagal Menambahkan Data Pengaduan');
-                redirect('admin/data_pengaduan');
-            } else {
-                $this->session->set_flashdata('gagal', 'Data Pengaduan Gagal Diajukan');
-                redirect('home/form_pengaduan');
-            }
+            $this->session->set_flashdata('gagal', 'Gagal Menambahkan Data Pengaduan');
+            redirect('admin/data_pengaduan');
+            // if ($this->session->id) {
+            // } else {
+            //     $this->session->set_flashdata('gagal', 'Data Pengaduan Gagal Diajukan');
+            //     redirect('form_pengaduan');
+            // }
+        }
+    }
+
+    function ajukan_pengaduan()
+    {
+        $data = [
+            'jenis_pengaduan'   => $this->input->post('jenis_pengaduan', TRUE),
+            'id_warga'          => $this->input->post('id_warga', TRUE),
+            'isi_pengaduan'     => $this->input->post('isi_pengaduan', TRUE),
+            'status'            => 0,
+            'waktu_pengaduan'   => date('Y-m-d H:i:s')
+        ];
+
+        if ($this->M_pengaduan->tambah_pengaduan($data)) {
+            $this->session->set_flashdata('berhasil', 'Data Pengaduan Berhasil Diajukan. Silahkan Menunggu Email Balasan Dari Admin.');
+            redirect('form_pengaduan');
+        } else {
+            $this->session->set_flashdata('gagal', 'Data Pengaduan Gagal Diajukan');
+            redirect('form_pengaduan');
         }
     }
 
@@ -49,10 +65,6 @@ class Pengaduan extends CI_Controller
 
         $data = [
             'jenis_pengaduan'   => $this->input->post('jenis_pengaduan', TRUE),
-            'nama_pengadu'      => $this->input->post('nama_pengadu', TRUE),
-            'email_pengadu'     => $this->input->post('email_pengadu', TRUE),
-            'nik_pengadu'       => $this->input->post('nik_pengadu', TRUE),
-            'rt_pengadu'        => $this->input->post('rt_pengadu', TRUE),
             'isi_pengaduan'     => $this->input->post('isi_pengaduan', TRUE)
         ];
 
@@ -101,7 +113,7 @@ class Pengaduan extends CI_Controller
         $this->email->initialize($config);
 
         $this->email->from('no-reply@desa-cikande.com', $email_nama);
-        $this->email->to($data_pengaduan->email_pengadu);
+        $this->email->to($data_pengaduan->email_warga);
 
         $this->email->subject($subject);
         $this->email->message($pesan);

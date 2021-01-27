@@ -48,21 +48,19 @@
                                 <tr>
                                     <td><?= $no++ ?>.</td>
                                     <td><?= $data->jenis_pengaduan ?></td>
-                                    <td><?= $data->nama_pengadu ?></td>
-                                    <td><?= $data->nik_pengadu ?></td>
-                                    <td><?= $data->email_pengadu ?></td>
-                                    <?= $data->status ? '<td class="bg-success text-light">Sudah Dibalas</td>' : '<td class="bg-danger text-light">Pending</td>' ?>
+                                    <td><?= $data->nama_warga ?></td>
+                                    <td><?= $data->nik ?></td>
+                                    <td><?= $data->email_warga ?></td>
+                                    <?= $data->status == '1' ? '<td class="bg-success text-light">Sudah Dibalas</td>' : '<td class="bg-danger text-light">Pending</td>' ?>
                                     <td>
                                         <a href="<?= base_url('admin/detail_aduan/') . md5($data->id_pengaduan) ?>" class="btn btn-info"><i class="fas fa-info fa-fw"></i></a>
-                                        <?php if ($data->status == 0) { ?>
+                                        <?php if ($data->status == '0') { ?>
                                             <a class="btn btn-warning" href="javascript:void(0);" data-toggle="modal" data-target="#editPengaduanModal<?= md5($data->id_pengaduan) ?>">
                                                 <i class="fas fa-edit fa-fw"></i>
                                             </a>
                                             <a class="btn btn-secondary" href="javascript:void(0);" data-toggle="modal" data-target="#replyPengaduanModal<?= md5($data->id_pengaduan) ?>">
                                                 <i class="fas fa-reply fa-fw"></i>
                                             </a>
-                                            <!-- <a href="<?= base_url('admin/ubah_aduan/') . md5($data->id_pengaduan) ?>" class="btn btn-warning"><i class="fas fa-edit fa-fw"></i></a> -->
-                                            <!-- <a href="<?= base_url('admin/reply_aduan/') . md5($data->id_pengaduan) ?>" class="btn btn-secondary"><i class="fas fa-reply fa-fw"></i></a> -->
                                         <?php } ?>
                                     </td>
                                 </tr>
@@ -80,27 +78,27 @@
                                                 <form action="<?= base_url('pengaduan/edit_pengaduan/' . md5($data->id_pengaduan)) ?>" method="post">
                                                     <div class="form-group">
                                                         <label>Nama Pengadu</label>
-                                                        <input type="text" name="nama_pengadu" class="form-control" value="<?= $data->nama_pengadu ?>" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>NIK Pengadu</label>
-                                                        <input type="text" value="<?= $data->nik_pengadu ?>" oninput="this.value = this.value.replace(/[^0-9]/g,'').replace(/(\..*)\./g, '$1')" name="nik_pengadu" class="form-control" required>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>Email Pengadu</label>
-                                                        <input type="email" name="email_pengadu" value="<?= $data->email_pengadu ?>" class="form-control" required>
+                                                        <input type="text" name="nama_pengadu" class="form-control" value="<?= $data->nama_warga ?>" readonly required>
+                                                        <input type="hidden" name="id_warga" class="form-control" value="<?= $data->id_warga ?>" readonly required>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Jenis Pengaduan</label>
-                                                        <input type="text" name="jenis_pengaduan" value="<?= $data->jenis_pengaduan ?>" class="form-control" required>
+
+                                                        <select name="jenis_pengaduan" id="jenis_pengaduan" class="form-control">
+                                                            <option value="">-- Pilih Jenis Pengaduan --</option>
+                                                            <option value="Jalan Desa" <?= $data->jenis_pengaduan == 'Jalan Desa' ? 'selected' : ''; ?>>Jalan Desa</option>
+                                                            <option value="Irigasi" <?= $data->jenis_pengaduan == 'Irigasi' ? 'selected' : ''; ?>>Irigasi</option>
+                                                            <option value="Pertanian" <?= $data->jenis_pengaduan == 'Pertanian' ? 'selected' : ''; ?>>Pertanian</option>
+                                                            <option value="Budaya" <?= $data->jenis_pengaduan == 'Budaya' ? 'selected' : ''; ?>>Budaya</option>
+                                                            <option value="Jembatan" <?= $data->jenis_pengaduan == 'Jembatan' ? 'selected' : ''; ?>>Jembatan</option>
+                                                            <option value="Posyandu" <?= $data->jenis_pengaduan == 'Posyandu' ? 'selected' : ''; ?>>Posyandu</option>
+                                                            <option value="UKM" <?= $data->jenis_pengaduan == 'UKM' ? 'selected' : ''; ?>>UKM</option>
+                                                            <option value="Lainnya" <?= $data->jenis_pengaduan == 'Lainnya' ? 'selected' : ''; ?>>Lainnya</option>
+                                                        </select>
                                                     </div>
                                                     <div class="form-group">
                                                         <label>Isi Pengaduan</label>
                                                         <textarea name="isi_pengaduan" rows="5" class="form-control" required><?= $data->isi_pengaduan ?></textarea>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label>RT Pengadu</label>
-                                                        <input type="text" value="<?= $data->rt_pengadu ?>" oninput="this.value = this.value.replace(/[^0-9]/g,'').replace(/(\..*)\./g, '$1')" name="rt_pengadu" maxlength="2" class="form-control" required>
                                                     </div>
                                             </div>
                                             <div class="modal-footer">
@@ -111,6 +109,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <!-- Modal reply -->
                                 <div class="modal fade" id="replyPengaduanModal<?= md5($data->id_pengaduan) ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelTambahAdmin" aria-hidden="true">
                                     <div class="modal-dialog" role="document">
@@ -157,15 +156,12 @@
                         <form action="<?= base_url('pengaduan/tambah_pengaduan') ?>" method="post">
                             <div class="form-group">
                                 <label>Nama Pengadu</label>
-                                <input type="text" name="nama_pengadu" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>NIK Pengadu</label>
-                                <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g,'').replace(/(\..*)\./g, '$1')" name="nik_pengadu" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>Email Pengadu</label>
-                                <input type="email" name="email_pengadu" class="form-control" required>
+                                <select type="text" name="id_warga" class="form-control" required>
+                                    <option value="">-- Pilih Warga --</option>
+                                    <?php foreach ($warga as $data) { ?>
+                                        <option value="<?= $data->id_warga ?>"><?= $data->nama_warga ?></option>
+                                    <?php } ?>
+                                </select>
                             </div>
                             <div class="form-group">
                                 <label>Jenis Pengaduan</label>
@@ -174,10 +170,6 @@
                             <div class="form-group">
                                 <label>Isi Pengaduan</label>
                                 <textarea name="isi_pengaduan" rows="5" class="form-control" required></textarea>
-                            </div>
-                            <div class="form-group">
-                                <label>RT Pengadu</label>
-                                <input type="text" oninput="this.value = this.value.replace(/[^0-9]/g,'').replace(/(\..*)\./g, '$1')" name="rt_pengadu" maxlength="2" class="form-control" required>
                             </div>
                     </div>
                     <div class="modal-footer">

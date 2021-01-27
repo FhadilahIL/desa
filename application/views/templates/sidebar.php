@@ -52,7 +52,7 @@
             Auth
         </div>
         <li class="nav-item">
-            <a class="nav-link" href="<?= base_url('auth/logout') ?>">
+            <a class="nav-link" href="javascript:void(0);" data-toggle="modal" data-target="#logoutModal">
                 <i class="fas fa-fw fa-sign-out-alt"></i>
                 <span>Logout</span>
             </a>
