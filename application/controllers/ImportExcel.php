@@ -31,7 +31,6 @@ class ImportExcel extends CI_Controller
       $password = substr($sheetData[$i]['2'], 10, 6);
       $alamat =  $sheetData[$i]['5'];
       list($rt,) = explode("/", $sheetData[$i]['6']);
-      $status = 1;
       $data = [
         "nama_warga" => $nama,
         "nik" => $nik,
